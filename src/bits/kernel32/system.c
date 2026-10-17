@@ -363,6 +363,15 @@ static BOOL WINAPI IsWow64Process(HANDLE proc, BOOL *wow)
     return TRUE;
 }
 
+static BOOL WINAPI DeviceIoControl(HANDLE dev, DWORD code, void *in, DWORD in_len, void *out, DWORD out_len,
+                                   LPDWORD returned, void *overlapped)
+{
+    if (returned)
+        *returned = 0;
+    trace("DeviceIoControl code 0x%x is not implemented", code);
+    return fail(ERROR_NOT_SUPPORTED);
+}
+
 BIT_TABLE(k32_system,
           BIT_FN(GetSystemInfo), BIT_FN(GetNativeSystemInfo),
           BIT_FN(GetVersion), BIT_FN(GetVersionExA), BIT_FN(GetVersionExW),
@@ -379,4 +388,4 @@ BIT_TABLE(k32_system,
           BIT_FN(SetUnhandledExceptionFilter), BIT_FN(UnhandledExceptionFilter),
           BIT_FN(SetErrorMode), BIT_FN(GetErrorMode), BIT_FN(SetThreadErrorMode),
           BIT_FN(RaiseException), BIT_FN(FormatMessageA), BIT_FN(FormatMessageW),
-          BIT_FN(GetLogicalProcessorInformation), BIT_FN(IsWow64Process));
+          BIT_FN(GetLogicalProcessorInformation), BIT_FN(IsWow64Process), BIT_FN(DeviceIoControl));
