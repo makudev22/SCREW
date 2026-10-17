@@ -1,5 +1,6 @@
 #include "cli.h"
 
+#include <screw/crash.h>
 #include <screw/handle.h>
 #include <screw/loader.h>
 #include <screw/log.h>
@@ -12,6 +13,7 @@ typedef int WINAPI (*entry_point)(void *peb);
 
 int cli_run(int argc, char **argv)
 {
+    crash_install();
     path_init();
     handles_init();
     process_init(argc, argv);
