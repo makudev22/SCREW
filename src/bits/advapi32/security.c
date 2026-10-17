@@ -114,4 +114,4 @@ BIT_TABLE(adv_security,
           BIT_FN(OpenProcessToken), BIT_FN(OpenThreadToken), BIT_FN(GetTokenInformation),
           BIT_FN(EventRegister), BIT_FN(EventUnregister), BIT_FN(EventWriteTransfer), BIT_FN(EventEnabled));
 
-BIT_DEFINE(bit_advapi32, "advapi32.dll", &adv_registry, &adv_security);
+BIT_DEFINE(bit_advapi32, "advapi32.dll", &adv_registry, &adv_security, &adv_notify);
