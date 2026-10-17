@@ -1,0 +1,4 @@
+resumed after RaiseException: yes
+filter saw code: E0A1B2C3
+filter saw param: DEAD
+canary intact: yes

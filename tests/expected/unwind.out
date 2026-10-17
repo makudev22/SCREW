@@ -1,0 +1,5 @@
+apis: ok
+frames walked: 4
+frame chain f1..main: ok
+rsp rises each frame: ok
+lookup rejects junk: ok
