@@ -12,10 +12,11 @@ static int usage(FILE *out)
             "\n"
             "usage: screw PROGRAM.exe [ARGS...]\n"
             "       screw info PROGRAM.exe     show imports and their support\n"
+            "       screw doctor               check drivers, display and setup\n"
             "       screw register             run .exe files directly (root)\n"
             "       screw unregister           undo register (root)\n"
             "\n"
-            "environment: SCREW_TRACE=1  SCREW_LENIENT=1  SCREW_C=DIR  SCREW_DLL_PATH=DIRS\n");
+            "environment: SCREW_TRACE=1  SCREW_LOG=FILE  SCREW_LENIENT=1  SCREW_C=DIR  SCREW_DLL_PATH=DIRS\n");
     return out == stderr ? 2 : 0;
 }
 
@@ -34,6 +35,8 @@ int main(int argc, char **argv)
     }
     if (!strcmp(cmd, "info"))
         return argc == 3 ? cli_info(argv[2]) : usage(stderr);
+    if (!strcmp(cmd, "doctor"))
+        return cli_doctor();
     if (!strcmp(cmd, "register"))
         return cli_register();
     if (!strcmp(cmd, "unregister"))
