@@ -1,0 +1,7 @@
+size known: yes
+file version: 3.1.4.15
+translation: 0409 04b0
+product (ansi): Screw Version Test
+description (wide, 22 chars): Reads its own version
+missing key: absent
+no resource in kernel32: none
