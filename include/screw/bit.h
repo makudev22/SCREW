@@ -8,18 +8,28 @@ struct bit_export {
     void *addr;
 };
 
-struct bit {
-    const char *name;
+struct bit_table {
     const struct bit_export *exports;
     size_t count;
+};
+
+struct bit {
+    const char *name;
+    const struct bit_table *const *tables;
 };
 
 #define BIT_FN(f) { #f, (void *)(f) }
 #define BIT_AS(n, f) { n, (void *)(f) }
 #define BIT_DATA(n, v) { n, (void *)&(v) }
 
-#define BIT_DEFINE(var, dll, table) \
-    const struct bit var = { dll, table, sizeof(table) / sizeof((table)[0]) }
+#define BIT_TABLE(var, ...)                                              \
+    static const struct bit_export var##_exports[] = { __VA_ARGS__ };    \
+    const struct bit_table var = { var##_exports,                        \
+                                   sizeof var##_exports / sizeof var##_exports[0] }
+
+#define BIT_DEFINE(var, dll, ...)                                                \
+    static const struct bit_table *const var##_tables[] = { __VA_ARGS__, NULL }; \
+    const struct bit var = { dll, var##_tables }
 
 const struct bit *bit_find(const char *dll);
 void *bit_symbol(const struct bit *b, const char *name);

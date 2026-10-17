@@ -93,7 +93,7 @@ static struct module *load_bit(const struct bit *b, const char *norm)
     m->is_dll = true;
     m->attached = true;
     link(m);
-    trace("bit %s ready (%zu functions)", norm, b->count);
+    trace("bit %s ready", norm);
     return m;
 }
 

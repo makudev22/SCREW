@@ -35,6 +35,7 @@ static const struct alias aliases[] = {
 };
 
 static struct bit_export *sorted[BIT_COUNT];
+static size_t sorted_count[BIT_COUNT];
 static pthread_once_t once = PTHREAD_ONCE_INIT;
 
 static int by_name(const void *a, const void *b)
@@ -45,9 +46,17 @@ static int by_name(const void *a, const void *b)
 static void build(void)
 {
     for (size_t i = 0; i < BIT_COUNT; i++) {
-        size_t n = bits[i]->count * sizeof(struct bit_export);
-        sorted[i] = memcpy(malloc(n), bits[i]->exports, n);
-        qsort(sorted[i], bits[i]->count, sizeof(struct bit_export), by_name);
+        size_t n = 0;
+        for (const struct bit_table *const *t = bits[i]->tables; *t; t++)
+            n += (*t)->count;
+        sorted[i] = malloc(n * sizeof(struct bit_export));
+        n = 0;
+        for (const struct bit_table *const *t = bits[i]->tables; *t; t++) {
+            memcpy(sorted[i] + n, (*t)->exports, (*t)->count * sizeof(struct bit_export));
+            n += (*t)->count;
+        }
+        qsort(sorted[i], n, sizeof(struct bit_export), by_name);
+        sorted_count[i] = n;
     }
 }
 
@@ -69,7 +78,7 @@ void *bit_symbol(const struct bit *b, const char *name)
         if (bits[i] != b)
             continue;
         struct bit_export key = { name, NULL };
-        struct bit_export *e = bsearch(&key, sorted[i], b->count, sizeof key, by_name);
+        struct bit_export *e = bsearch(&key, sorted[i], sorted_count[i], sizeof key, by_name);
         return e ? e->addr : NULL;
     }
     return NULL;
