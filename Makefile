@@ -26,7 +26,7 @@ build/obj/%.o: src/%.c
 
 build/tests/%.exe: tests/samples/%.c
 	@mkdir -p $(dir $@)
-	$(WINCC) -O2 -o $@ $<
+	$(WINCC) -O2 -o $@ $< -lws2_32
 
 samples: $(EXES)
 

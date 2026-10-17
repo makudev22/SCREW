@@ -1,0 +1,5 @@
+winsock 2.2
+tcp loopback: echo:ping
+refused: WSAECONNREFUSED
+getaddrinfo localhost: r=0 has_v4=1
+inet6: 2001:db8::1
