@@ -11,6 +11,7 @@ extern const struct bit bit_advapi32;
 extern const struct bit bit_ws2_32;
 extern const struct bit bit_user32;
 extern const struct bit bit_vulkan;
+extern const struct bit bit_version;
 
 static const struct bit *const bits[] = {
     &bit_kernel32,
@@ -20,6 +21,7 @@ static const struct bit *const bits[] = {
     &bit_ws2_32,
     &bit_user32,
     &bit_vulkan,
+    &bit_version,
 };
 
 #define BIT_COUNT (sizeof bits / sizeof bits[0])
@@ -41,6 +43,7 @@ static const struct alias aliases[] = {
     { "api-ms-win-eventing-", &bit_advapi32 },
     { "ext-ms-win-ntuser-", &bit_user32 },
     { "winevulkan", &bit_vulkan },
+    { "api-ms-win-core-version-", &bit_version },
 };
 
 static struct bit_export *sorted[BIT_COUNT];
