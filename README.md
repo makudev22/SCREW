@@ -61,6 +61,7 @@ make test
 ```
 screw program.exe [args...]
 screw info program.exe        # show imports and which ones are supported
+screw doctor                  # check drivers, display and setup, with fixes
 sudo screw register           # run .exe files directly via binfmt_misc
 sudo screw unregister
 ```
@@ -70,6 +71,7 @@ Environment:
 | Variable          | Meaning                                    |
 |-------------------|--------------------------------------------|
 | `SCREW_TRACE=1`   | log loading and resolved imports           |
+| `SCREW_LOG=FILE`  | write the full log to a file               |
 | `SCREW_LENIENT=1` | missing APIs return 0 instead of aborting  |
 | `SCREW_C`         | host directory used as `C:\`               |
 
@@ -79,6 +81,11 @@ Works today: console programs built with MinGW or MSVC that use the C runtime
 (`msvcrt`) and core `kernel32` (files, memory, threads, sync, time, environment),
 plus `MessageBox` through the desktop notifier. Full GUI (`CreateWindow`) and
 DirectX are not implemented yet.
+
+## Troubleshooting
+
+Run `screw doctor` first. Crashes print the module and offset where they happened.
+See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for logs, driver setup and common errors.
 
 ## Layout
 
