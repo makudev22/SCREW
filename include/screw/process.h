@@ -13,6 +13,8 @@ const WCHAR *process_wcmdline(void);
 const char *process_exe_host(void);
 const char *process_exe_windows(void);
 
+char **cmdline_split(const char *cmd, int *argc);
+
 const char *env_get(const char *name);
 void env_set(const char *name, const char *value);
 char *env_block(void);

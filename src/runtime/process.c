@@ -186,6 +186,53 @@ void process_init(int argc, char **argv)
     env_defaults();
 }
 
+char **cmdline_split(const char *cmd, int *argc)
+{
+    size_t cap = 8, n = 0;
+    char **argv = malloc(cap * sizeof *argv);
+    char *buf = malloc(strlen(cmd) + 1);
+    const char *p = cmd;
+    for (;;) {
+        while (*p == ' ' || *p == '\t')
+            p++;
+        if (!*p)
+            break;
+        char *o = buf;
+        bool quoted = false;
+        while (*p && (quoted || (*p != ' ' && *p != '\t'))) {
+            size_t slashes = 0;
+            while (*p == '\\')
+                p++, slashes++;
+            if (*p == '"') {
+                for (size_t i = 0; i < slashes / 2; i++)
+                    *o++ = '\\';
+                if (slashes % 2)
+                    *o++ = '"';
+                else if (quoted && p[1] == '"')
+                    *o++ = '"', p++;
+                else
+                    quoted = !quoted;
+                p++;
+            } else {
+                for (size_t i = 0; i < slashes; i++)
+                    *o++ = '\\';
+                if (*p && (quoted || (*p != ' ' && *p != '\t')))
+                    *o++ = *p++;
+            }
+        }
+        *o = 0;
+        if (n + 2 > cap) {
+            cap *= 2;
+            argv = realloc(argv, cap * sizeof *argv);
+        }
+        argv[n++] = strdup(buf);
+    }
+    argv[n] = NULL;
+    free(buf);
+    *argc = n;
+    return argv;
+}
+
 int process_argc(void) { return argc_; }
 char **process_argv(void) { return argv_; }
 WCHAR **process_wargv(void) { return wargv; }
