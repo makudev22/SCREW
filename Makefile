@@ -27,9 +27,12 @@ build/obj/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-build/tests/%.exe: tests/samples/%.c
+WINRES   ?= x86_64-w64-mingw32-windres
+
+build/tests/%.exe: tests/samples/%.c $(wildcard tests/samples/*.rc)
 	@mkdir -p $(dir $@)
-	$(WINCC) -O2 -o $@ $< -lws2_32
+	@if [ -f tests/samples/$*.rc ]; then $(WINRES) -O coff tests/samples/$*.rc -o build/tests/$*.res.o; fi
+	$(WINCC) -O2 -o $@ $< $$([ -f tests/samples/$*.rc ] && echo build/tests/$*.res.o) -lws2_32 -lversion
 
 build/unit/%: tests/unit/%.c $(LIBOBJ)
 	@mkdir -p $(dir $@)
