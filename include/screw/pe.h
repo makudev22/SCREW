@@ -12,6 +12,7 @@
 
 #define PE_DIR_EXPORT 0
 #define PE_DIR_IMPORT 1
+#define PE_DIR_RESOURCE 2
 #define PE_DIR_EXCEPTION 3
 #define PE_DIR_BASERELOC 5
 #define PE_DIR_TLS 9
@@ -128,6 +129,30 @@ struct pe_export {
 struct pe_reloc_block {
     uint32_t page_rva;
     uint32_t block_size;
+};
+
+#define PE_RESOURCE_SUBDIR 0x80000000u
+#define PE_RT_VERSION 16
+
+struct pe_resource_dir {
+    uint32_t characteristics;
+    uint32_t timestamp;
+    uint16_t major;
+    uint16_t minor;
+    uint16_t named_count;
+    uint16_t id_count;
+};
+
+struct pe_resource_entry {
+    uint32_t name;
+    uint32_t offset;
+};
+
+struct pe_resource_data {
+    uint32_t rva;
+    uint32_t size;
+    uint32_t codepage;
+    uint32_t reserved;
 };
 
 struct pe_tls {
