@@ -4,7 +4,7 @@ WINCC    ?= x86_64-w64-mingw32-gcc
 CFLAGS   ?= -O2
 CFLAGS   += -std=gnu11 -D_GNU_SOURCE -Wall -Wextra -Wno-unused-parameter -Wno-format-truncation -Iinclude -fno-strict-aliasing -fPIE -MMD -MP
 LDFLAGS  += -pie
-LDLIBS   += -lpthread -lm
+LDLIBS   += -lpthread -lm -lX11
 
 SRC      := $(shell find src -name '*.c' | sort)
 OBJ      := $(SRC:src/%.c=build/obj/%.o)
