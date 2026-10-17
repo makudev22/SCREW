@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef uint64_t UINT_PTR;
 typedef uint64_t WPARAM;
 typedef int64_t LPARAM;
 typedef int64_t LRESULT;
@@ -189,12 +190,14 @@ const char *class_key(const void *name, bool wide, char buf[128]);
 
 struct window *window_get(HWND h);
 struct window *window_by_xid(Window xid);
+struct window *window_next(struct window *prev);
 LRESULT window_send(struct window *w, UINT msg, WPARAM wp, LPARAM lp);
 HWND window_focus(void);
 void window_set_focus(HWND h);
 void window_moved(struct window *w, int x, int y, int width, int height);
 
 void queue_post(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp);
+void queue_post_key(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, DWORD ch);
 void queue_post_thread(uint64_t thread, HWND hwnd, UINT msg, WPARAM wp, LPARAM lp);
 void queue_wake(void);
 
@@ -207,6 +210,12 @@ extern const struct bit_table u32_message;
 extern const struct bit_table u32_input;
 extern const struct bit_table u32_system;
 extern const struct bit_table u32_dialog;
+
+static inline BOOL fail_win(DWORD error)
+{
+    last_error_set(error);
+    return FALSE;
+}
 
 static inline LPARAM make_lparam(int lo, int hi) { return (LPARAM)(DWORD)((WORD)lo | ((DWORD)(WORD)hi << 16)); }
 

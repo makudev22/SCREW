@@ -53,6 +53,18 @@ struct window *window_by_xid(Window xid)
     return found;
 }
 
+struct window *window_next(struct window *prev)
+{
+    size_t i = prev ? ((uintptr_t)prev->hwnd - HWND_BASE) / HWND_STEP + 1 : 16;
+    struct window *found = NULL;
+    pthread_mutex_lock(&lock);
+    for (; i < MAX_WINDOWS && !found; i++)
+        if (windows[i] && !windows[i]->destroyed)
+            found = windows[i];
+    pthread_mutex_unlock(&lock);
+    return found;
+}
+
 static HWND add(struct window *w)
 {
     pthread_mutex_lock(&lock);
