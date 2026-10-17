@@ -45,6 +45,7 @@ extern const struct bit_table crt_time;
 extern const struct bit_table crt_io;
 extern const struct bit_table crt_misc;
 extern const struct bit_table crt_wstream;
+extern const struct bit_table crt_jump;
 
 FILE *crt_host(struct wfile *f);
 struct wfile *crt_stream(int index);
