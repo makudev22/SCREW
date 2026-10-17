@@ -10,6 +10,9 @@ SRC      := $(shell find src -name '*.c' | sort)
 OBJ      := $(SRC:src/%.c=build/obj/%.o)
 BIN      := build/screw
 
+LIBOBJ   := $(filter-out build/obj/cli/main.o,$(OBJ))
+UNITS    := $(patsubst tests/unit/%.c,build/unit/%,$(wildcard tests/unit/*.c))
+
 SAMPLES  := $(wildcard tests/samples/*.c)
 EXES     := $(SAMPLES:tests/samples/%.c=build/tests/%.exe)
 
@@ -28,9 +31,14 @@ build/tests/%.exe: tests/samples/%.c
 	@mkdir -p $(dir $@)
 	$(WINCC) -O2 -o $@ $< -lws2_32
 
+build/unit/%: tests/unit/%.c $(LIBOBJ)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBOBJ) $(LDLIBS)
+
 samples: $(EXES)
 
-test: $(BIN) $(EXES)
+test: $(BIN) $(EXES) $(UNITS)
+	@for u in $(UNITS); do $$u || exit 1; done
 	@tests/run.sh $(BIN) build/tests tests/expected
 
 install: $(BIN)
