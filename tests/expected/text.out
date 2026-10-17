@@ -1,0 +1,8 @@
+utf8 (25): Привет, Screw! ✓
+roundtrip: ok, wcslen=16
+float: 3.142 1.234568e+04 1.41421
+ints:    42|42   |000ff|-1234567890123|18446744073709551615|-7
+str: [     right] [tru   ] Z
+snprintf: abc-99 (6)
+sscanf: 17 apples 2.5
+strtol: -127
