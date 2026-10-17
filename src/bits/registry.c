@@ -85,7 +85,9 @@ void *bit_symbol(const struct bit *b, const char *name)
             continue;
         struct bit_export key = { name, NULL };
         struct bit_export *e = bsearch(&key, sorted[i], sorted_count[i], sizeof key, by_name);
-        return e ? e->addr : NULL;
+        if (e)
+            return e->addr;
+        return b->resolve ? b->resolve(name) : NULL;
     }
     return NULL;
 }

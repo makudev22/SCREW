@@ -16,6 +16,7 @@ struct bit_table {
 struct bit {
     const char *name;
     const struct bit_table *const *tables;
+    void *(*resolve)(const char *name);
 };
 
 #define BIT_FN(f) { #f, (void *)(f) }
@@ -29,7 +30,11 @@ struct bit {
 
 #define BIT_DEFINE(var, dll, ...)                                                \
     static const struct bit_table *const var##_tables[] = { __VA_ARGS__, NULL }; \
-    const struct bit var = { dll, var##_tables }
+    const struct bit var = { dll, var##_tables, NULL }
+
+#define BIT_DEFINE_RESOLVED(var, dll, resolver, ...)                             \
+    static const struct bit_table *const var##_tables[] = { __VA_ARGS__, NULL }; \
+    const struct bit var = { dll, var##_tables, resolver }
 
 const struct bit *bit_find(const char *dll);
 void *bit_symbol(const struct bit *b, const char *name);
