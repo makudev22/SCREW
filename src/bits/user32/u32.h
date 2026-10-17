@@ -207,6 +207,7 @@ extern const struct bit_table u32_message;
 extern const struct bit_table u32_system;
 extern const struct bit_table u32_dialog;
 extern const struct bit_table u32_rect;
+extern const struct bit_table u32_paint;
 
 static inline BOOL fail_win(DWORD error)
 {
