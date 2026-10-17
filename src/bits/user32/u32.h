@@ -201,13 +201,9 @@ void queue_post_key(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, DWORD ch);
 void queue_post_thread(uint64_t thread, HWND hwnd, UINT msg, WPARAM wp, LPARAM lp);
 void queue_wake(void);
 
-void input_event(XEvent *ev, struct window *w);
-void input_cursor(int x, int y);
-
 extern const struct bit_table u32_class;
 extern const struct bit_table u32_window;
 extern const struct bit_table u32_message;
-extern const struct bit_table u32_input;
 extern const struct bit_table u32_system;
 extern const struct bit_table u32_dialog;
 
