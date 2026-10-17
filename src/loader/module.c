@@ -178,6 +178,16 @@ struct module *module_load_main(const char *host_path)
     return link_image(m);
 }
 
+struct module *module_load_file(const char *host_path)
+{
+    const char *slash = strrchr(host_path, '/');
+    struct module *m = module_find(slash ? slash + 1 : host_path);
+    if (m)
+        return m;
+    m = image_map(host_path);
+    return m ? link_image(m) : NULL;
+}
+
 void *module_symbol(struct module *m, const char *name)
 {
     return m->bit ? bit_symbol(m->bit, name) : exports_lookup(m, name);
