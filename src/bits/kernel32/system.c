@@ -1,5 +1,6 @@
 #include "k32.h"
 
+#include <screw/except.h>
 #include <screw/log.h>
 
 #include <cpuid.h>
@@ -246,11 +247,21 @@ static BOOL WINAPI SetThreadErrorMode(DWORD mode, LPDWORD old)
     return TRUE;
 }
 
+LONG screw_unhandled(EXCEPTION_RECORD *record, CONTEXT *context)
+{
+    if (top_filter) {
+        void *pointers[2] = { record, context };
+        if (top_filter(pointers) == -1)
+            return -1;
+    }
+    die("unhandled exception 0x%08X at %p", record->exception_code, record->exception_address);
+}
+
 static void WINAPI RaiseException(DWORD code, DWORD flags, DWORD argc, const ULONG_PTR *args)
 {
     if (code == 0x406D1388)
         return;
-    die("unhandled exception 0x%08X raised by the program", code);
+    screw_raise_exception(code, flags, argc, args);
 }
 
 static const char *message_for(DWORD id)
