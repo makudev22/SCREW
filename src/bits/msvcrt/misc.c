@@ -24,7 +24,7 @@ static __thread unsigned long doserrno_;
 static sig_fn handlers[32];
 static pthread_mutex_t locks[64];
 static pthread_once_t locks_once = PTHREAD_ONCE_INIT;
-static int mb_cur_max = 1;
+static int mb_cur_max = 4;
 static unsigned short ctype_table[257];
 static const unsigned short *ctype_ptr = ctype_table + 1;
 
@@ -176,6 +176,7 @@ static WCHAR *WINAPI _wsetlocale(int category, const WCHAR *name) { return c_loc
 static struct lconv *WINAPI localeconv_(void) { return localeconv(); }
 
 static int WINAPI ___mb_cur_max_func(void) { return mb_cur_max; }
+static int *WINAPI __p___mb_cur_max(void) { return &mb_cur_max; }
 static UINT WINAPI ___lc_codepage_func(void) { return 65001; }
 static UINT WINAPI ___lc_collate_cp_func(void) { return 65001; }
 static WCHAR **WINAPI ___lc_locale_name_func(void)
@@ -323,7 +324,7 @@ BIT_TABLE(crt_misc,
           BIT_AS("signal", signal_), BIT_AS("raise", raise_),
           BIT_FN(_lock), BIT_FN(_unlock),
           BIT_AS("setlocale", setlocale_), BIT_FN(_wsetlocale), BIT_AS("localeconv", localeconv_),
-          BIT_FN(___mb_cur_max_func), BIT_AS("__p___mb_cur_max", ___mb_cur_max_func),
+          BIT_FN(___mb_cur_max_func), BIT_FN(__p___mb_cur_max),
           BIT_DATA("__mb_cur_max", mb_cur_max),
           BIT_FN(___lc_codepage_func), BIT_FN(___lc_collate_cp_func), BIT_FN(___lc_locale_name_func),
           BIT_FN(_create_locale), BIT_FN(_free_locale), BIT_FN(_get_current_locale),
