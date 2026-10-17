@@ -72,6 +72,11 @@ x86_64-w64-mingw32-objdump -d --start-address=0x14000149c app.exe | head
 
 Проверка: `screw doctor` (раздел Vulkan) или `vulkaninfo --summary`.
 Если видна только `llvmpipe` — работает программный рендер, игры будут очень медленными.
+Мост `vulkan-1.dll` пишет в журнал (`SCREW_TRACE=1`) включённые расширения и результат
+`vkCreateInstance`/`vkCreateDevice`. Другой загрузчик Vulkan можно задать через
+`SCREW_VULKAN=/путь/libvulkan.so.1`. Слои проверки Linux работают как обычно:
+`VK_INSTANCE_LAYERS=VK_LAYER_KHRONOS_validation screw app.exe`.
+
 На ноутбуке с двумя видеокартами NVIDIA можно выбрать так:
 `__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia screw game.exe`.
 
