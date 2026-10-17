@@ -1,0 +1,4 @@
+notify armed: yes
+before change: quiet
+after change: signaled
+luids unique: yes
