@@ -19,6 +19,7 @@ typedef uint64_t ULONG_PTR;
 typedef int64_t LONG_PTR;
 typedef uint64_t SIZE_T;
 typedef uint64_t DWORD64;
+typedef uint64_t DWORD_PTR;
 typedef uint16_t WCHAR;
 typedef int32_t NTSTATUS;
 
