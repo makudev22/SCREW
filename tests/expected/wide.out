@@ -1,0 +1,4 @@
+roundtrip: ok
+first: 041f, last: z, eof: yes
+mbsrtowcs: 3 units, 0410 0411 0412, done yes
+wctype: alpha(A)=1 digit(7)=1 space(x)=0
