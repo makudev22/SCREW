@@ -153,6 +153,8 @@ static int getc_text(struct wfile *f)
     return c;
 }
 
+int crt_getc(struct wfile *f) { return getc_text(f); }
+
 static int WINAPI fgetc_(struct wfile *f) { return getc_text(f); }
 static int WINAPI getchar_(void) { return getc_text(crt_stream(0)); }
 

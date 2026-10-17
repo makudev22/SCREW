@@ -44,10 +44,12 @@ extern const struct bit_table crt_math;
 extern const struct bit_table crt_time;
 extern const struct bit_table crt_io;
 extern const struct bit_table crt_misc;
+extern const struct bit_table crt_wstream;
 
 FILE *crt_host(struct wfile *f);
 struct wfile *crt_stream(int index);
 void crt_flush_all(void);
+int crt_getc(struct wfile *f);
 
 int *crt_errno(void);
 void crt_errno_set(int e);
