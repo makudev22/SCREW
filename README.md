@@ -74,13 +74,21 @@ Environment:
 | `SCREW_LOG=FILE`  | write the full log to a file               |
 | `SCREW_LENIENT=1` | missing APIs return 0 instead of aborting  |
 | `SCREW_C`         | host directory used as `C:\`               |
+| `SCREW_VULKAN`    | Vulkan loader to use instead of `libvulkan.so.1` |
 
 ## Status
 
 Works today: console programs built with MinGW or MSVC that use the C runtime
 (`msvcrt`) and core `kernel32` (files, memory, threads, sync, time, environment),
-plus `MessageBox` through the desktop notifier. Full GUI (`CreateWindow`) and
-DirectX are not implemented yet.
+Winsock networking, the registry, `MessageBox`, and X11 windows with a message loop.
+
+`vulkan-1.dll` is a bridge to the native Linux Vulkan driver: every Vulkan call
+crosses from the Windows calling convention to the host driver, `VK_KHR_win32_surface`
+is served by `VK_KHR_xlib_surface`, Windows allocators are kept away from the driver,
+and debug callbacks call back into Windows code. This is the layer DXVK runs on.
+
+Not done yet: keyboard and mouse input inside windows, audio, gamepads, and the
+DirectX DLLs themselves (DXVK supplies those as native PE DLLs placed next to the game).
 
 ## Troubleshooting
 
