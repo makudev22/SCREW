@@ -94,6 +94,29 @@ static const struct locale *current_locale(void)
 
 static bool is_utf8(UINT cp) { return cp == CP_ACP || cp == CP_OEMCP || cp == CP_UTF8 || cp == 3; }
 
+#define MB_ERR_INVALID_CHARS 0x8
+
+static bool utf8_valid(const unsigned char *s, int len)
+{
+    for (int i = 0; i < len;) {
+        unsigned c = s[i];
+        int extra = c < 0x80 ? 0 : c >= 0xC2 && c < 0xE0 ? 1 : c >= 0xE0 && c < 0xF0 ? 2 : c >= 0xF0 && c < 0xF5 ? 3 : -1;
+        if (extra < 0 || i + extra >= len + (extra ? 0 : 1))
+            return false;
+        uint32_t cp = extra ? c & (0x3F >> extra) : c;
+        for (int k = 1; k <= extra; k++) {
+            if ((s[i + k] & 0xC0) != 0x80)
+                return false;
+            cp = (cp << 6) | (s[i + k] & 0x3F);
+        }
+        static const uint32_t min[] = { 0, 0x80, 0x800, 0x10000 };
+        if (cp < min[extra] || cp > 0x10FFFF || (cp >= 0xD800 && cp < 0xE000))
+            return false;
+        i += extra + 1;
+    }
+    return true;
+}
+
 static int WINAPI MultiByteToWideChar(UINT cp, DWORD flags, LPCSTR src, int src_len, LPWSTR dst, int dst_len)
 {
     if (!src || src_len == 0)
@@ -101,6 +124,8 @@ static int WINAPI MultiByteToWideChar(UINT cp, DWORD flags, LPCSTR src, int src_
     if (src_len < 0)
         src_len = strlen(src) + 1;
     if (is_utf8(cp)) {
+        if ((flags & MB_ERR_INVALID_CHARS) && !utf8_valid((const unsigned char *)src, src_len))
+            return fail(ERROR_NO_UNICODE_TRANSLATION);
         int n = utf8_to_utf16(src, src_len, dst_len ? dst : NULL, dst_len);
         return n < 0 ? fail(ERROR_INSUFFICIENT_BUFFER) : n;
     }
