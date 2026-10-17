@@ -54,15 +54,21 @@ void futex_wake(void *addr, int count)
 
 static void destroy(struct object *o) { free(o); }
 
-struct waitable *waitable_new(enum waitable_type type, long count, long max, bool manual)
+void waitable_init(struct waitable *w, enum waitable_type type, long count, long max, bool manual,
+                   void (*destroy_fn)(struct object *))
 {
     pthread_once(&once, setup);
-    struct waitable *w = calloc(1, sizeof *w);
-    object_init(&w->base, OBJ_WAITABLE, destroy);
+    object_init(&w->base, OBJ_WAITABLE, destroy_fn);
     w->type = type;
     w->count = count;
     w->max = max;
     w->manual = manual;
+}
+
+struct waitable *waitable_new(enum waitable_type type, long count, long max, bool manual)
+{
+    struct waitable *w = calloc(1, sizeof *w);
+    waitable_init(w, type, count, max, manual, destroy);
     return w;
 }
 

@@ -21,6 +21,8 @@ struct waitable {
     DWORD exit_code;
 };
 
+void waitable_init(struct waitable *w, enum waitable_type type, long count, long max, bool manual,
+                   void (*destroy)(struct object *));
 struct waitable *waitable_new(enum waitable_type type, long count, long max, bool manual);
 struct waitable *waitable_get(HANDLE h);
 
