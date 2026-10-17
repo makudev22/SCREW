@@ -68,7 +68,7 @@ static void make_dirs(const char *path)
     mkdir(buf, 0755);
 }
 
-static char *base_dir(HKEY h)
+char *reg_key_dir(void *h)
 {
     uint32_t v = (uint32_t)(uintptr_t)h;
     if (v >= 0x80000000u && v <= 0x80000005u) {
@@ -149,7 +149,7 @@ static HKEY wrap(char *dir)
 
 static LONG open_key(HKEY parent, const char *sub, HKEY *out, bool create, DWORD *disposition)
 {
-    char *base = base_dir(parent);
+    char *base = reg_key_dir(parent);
     if (!base)
         return ERROR_INVALID_HANDLE;
     char *dir = sub_dir(base, sub);
@@ -174,7 +174,7 @@ static bool string_type(DWORD t) { return t == REG_SZ || t == REG_EXPAND_SZ || t
 
 static LONG read_value(HKEY h, const char *name, DWORD *type, uint8_t **data, DWORD *size)
 {
-    char *dir = base_dir(h);
+    char *dir = reg_key_dir(h);
     if (!dir)
         return ERROR_INVALID_HANDLE;
     char *path = value_path(dir, name);
@@ -202,7 +202,7 @@ static LONG read_value(HKEY h, const char *name, DWORD *type, uint8_t **data, DW
 
 static LONG write_value(HKEY h, const char *name, DWORD type, const void *data, DWORD size)
 {
-    char *dir = base_dir(h);
+    char *dir = reg_key_dir(h);
     if (!dir)
         return ERROR_INVALID_HANDLE;
     char *path = value_path(dir, name);
@@ -290,7 +290,7 @@ static LONG set_w(HKEY h, const char *name, DWORD type, const BYTE *data, DWORD 
 
 static LONG enum_entries(HKEY h, DWORD index, bool values, char *name, size_t cap)
 {
-    char *dir = base_dir(h);
+    char *dir = reg_key_dir(h);
     if (!dir)
         return ERROR_INVALID_HANDLE;
     DIR *d = opendir(dir);
@@ -344,7 +344,7 @@ static LONG remove_tree(const char *dir)
 
 static LONG delete_key(HKEY h, const char *sub, bool tree)
 {
-    char *base = base_dir(h);
+    char *base = reg_key_dir(h);
     if (!base)
         return ERROR_INVALID_HANDLE;
     char *dir = sub_dir(base, sub);
@@ -360,7 +360,7 @@ static LONG delete_key(HKEY h, const char *sub, bool tree)
 
 static LONG delete_value(HKEY h, const char *name)
 {
-    char *dir = base_dir(h);
+    char *dir = reg_key_dir(h);
     if (!dir)
         return ERROR_INVALID_HANDLE;
     char *path = value_path(dir, name);

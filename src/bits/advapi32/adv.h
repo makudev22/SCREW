@@ -13,5 +13,8 @@
 
 extern const struct bit_table adv_registry;
 extern const struct bit_table adv_security;
+extern const struct bit_table adv_notify;
+
+char *reg_key_dir(void *key);
 
 #endif
