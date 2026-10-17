@@ -7,7 +7,8 @@ LDFLAGS  += -pie
 LDLIBS   += -lpthread -lm -lX11
 
 SRC      := $(shell find src -name '*.c' | sort)
-OBJ      := $(SRC:src/%.c=build/obj/%.o)
+ASM      := $(shell find src -name '*.S' | sort)
+OBJ      := $(SRC:src/%.c=build/obj/%.o) $(ASM:src/%.S=build/obj/%.o)
 BIN      := build/screw
 
 LIBOBJ   := $(filter-out build/obj/cli/main.o,$(OBJ))
@@ -24,6 +25,10 @@ $(BIN): $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 build/obj/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+build/obj/%.o: src/%.S
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
