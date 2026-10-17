@@ -3,6 +3,7 @@
 #include <screw/unicode.h>
 
 #include <limits.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include <pwd.h>
 #include <stdio.h>

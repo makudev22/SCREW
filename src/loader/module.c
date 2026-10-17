@@ -1,5 +1,6 @@
 #include <screw/loader.h>
 #include <screw/log.h>
+#include <screw/win.h>
 
 #include <ctype.h>
 #include <dirent.h>

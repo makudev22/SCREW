@@ -306,9 +306,13 @@ static DWORD WINAPI FormatMessageA(DWORD flags, LPCVOID source, DWORD id, DWORD 
         *(char **)out = msg;
         return len;
     }
-    DWORD r = len < size ? (memcpy(out, msg, len + 1), len) : 0;
+    bool fits = len < size;
+    if (fits)
+        memcpy(out, msg, len + 1);
     free(msg);
-    return r ? r : fail(ERROR_INSUFFICIENT_BUFFER);
+    if (!fits)
+        return fail(ERROR_INSUFFICIENT_BUFFER);
+    return len;
 }
 
 static DWORD WINAPI FormatMessageW(DWORD flags, LPCVOID source, DWORD id, DWORD lang, LPWSTR out,
@@ -326,9 +330,13 @@ static DWORD WINAPI FormatMessageW(DWORD flags, LPCVOID source, DWORD id, DWORD 
         *(WCHAR **)out = w;
         return len;
     }
-    DWORD r = len < size ? (memcpy(out, w, (len + 1) * sizeof *w), len) : 0;
+    bool fits = len < size;
+    if (fits)
+        memcpy(out, w, (len + 1) * sizeof *w);
     free(w);
-    return r ? r : fail(ERROR_INSUFFICIENT_BUFFER);
+    if (!fits)
+        return fail(ERROR_INSUFFICIENT_BUFFER);
+    return len;
 }
 
 static BOOL WINAPI GetLogicalProcessorInformation(PROCESSOR_INFO *out, LPDWORD len)
