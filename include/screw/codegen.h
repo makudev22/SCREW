@@ -7,5 +7,6 @@
 void *code_emit(const void *bytes, size_t n);
 void *code_jump(uint64_t r11_value, void *target);
 void *code_call1(uint64_t rdi_value, void *target);
+void *code_null_arg(int index, void *target);
 
 #endif
