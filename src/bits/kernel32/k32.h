@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 extern const struct bit_table k32_module;
 extern const struct bit_table k32_file;
@@ -34,6 +35,23 @@ static inline BOOL fail(DWORD error)
 static inline BOOL fail_errno(void)
 {
     return fail(path_errno_to_error(errno));
+}
+
+#define UNIX_EPOCH_TICKS 116444736000000000ull
+
+static inline uint64_t ticks_from_timespec(const struct timespec *ts)
+{
+    return UNIX_EPOCH_TICKS + ts->tv_sec * 10000000ull + ts->tv_nsec / 100;
+}
+
+static inline FILETIME filetime_from_ticks(uint64_t t)
+{
+    return (FILETIME){ (DWORD)t, (DWORD)(t >> 32) };
+}
+
+static inline uint64_t ticks_from_filetime(const FILETIME *ft)
+{
+    return ((uint64_t)ft->high << 32) | ft->low;
 }
 
 DWORD copy_out_a(const char *src, LPSTR dst, DWORD size);
