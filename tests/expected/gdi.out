@@ -1,0 +1,6 @@
+screen dc: ok, 1920x1080, 32 bpp
+pixel roundtrip: ok (r=10 g=20 b=30)
+bitblt: ok, copied pixel ok
+stretchblt: ok, scaled pixel ok
+getobject: 8x8, type memdc=yes
+cleanup done
