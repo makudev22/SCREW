@@ -9,6 +9,7 @@ extern const struct bit bit_msvcrt;
 extern const struct bit bit_ntdll;
 extern const struct bit bit_advapi32;
 extern const struct bit bit_ws2_32;
+extern const struct bit bit_user32;
 
 static const struct bit *const bits[] = {
     &bit_kernel32,
@@ -16,6 +17,7 @@ static const struct bit *const bits[] = {
     &bit_ntdll,
     &bit_advapi32,
     &bit_ws2_32,
+    &bit_user32,
 };
 
 #define BIT_COUNT (sizeof bits / sizeof bits[0])
@@ -35,6 +37,7 @@ static const struct alias aliases[] = {
     { "api-ms-win-security-", &bit_advapi32 },
     { "wsock32", &bit_ws2_32 },
     { "api-ms-win-eventing-", &bit_advapi32 },
+    { "ext-ms-win-ntuser-", &bit_user32 },
 };
 
 static struct bit_export *sorted[BIT_COUNT];
