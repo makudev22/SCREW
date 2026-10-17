@@ -54,6 +54,9 @@ static inline uint64_t ticks_from_filetime(const FILETIME *ft)
     return ((uint64_t)ft->high << 32) | ft->low;
 }
 
+struct stat;
+DWORD attributes_of(const char *host, const struct stat *st);
+
 DWORD copy_out_a(const char *src, LPSTR dst, DWORD size);
 DWORD copy_out_w(const char *src, LPWSTR dst, DWORD size);
 
