@@ -1,0 +1,8 @@
+loader: ok
+win32 surface advertised: yes, xlib hidden: yes
+instance: ok
+devices: yes
+device: ok
+submit and wait on GPU: ok
+windows allocator left alone: yes
+debug callback reached Windows code: yes
