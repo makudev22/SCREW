@@ -80,15 +80,19 @@ Environment:
 
 Works today: console programs built with MinGW or MSVC that use the C runtime
 (`msvcrt`) and core `kernel32` (files, memory, threads, sync, time, environment),
-Winsock networking, the registry, `MessageBox`, and X11 windows with a message loop.
+Winsock networking, the registry, `MessageBox`, X11 windows with keyboard and mouse
+input, gdi32 device contexts, structured and C++ exception unwinding, and device
+enumeration through `setupapi`.
 
-`vulkan-1.dll` is a bridge to the native Linux Vulkan driver: every Vulkan call
-crosses from the Windows calling convention to the host driver, `VK_KHR_win32_surface`
-is served by `VK_KHR_xlib_surface`, Windows allocators are kept away from the driver,
-and debug callbacks call back into Windows code. This is the layer DXVK runs on.
+`vulkan-1.dll` bridges to the native Linux Vulkan driver, and with the official DXVK
+DLLs placed beside a program (`SCREW_DLL_PATH`) Direct3D reaches the GPU through it:
+`CreateDXGIFactory1` enumerates the real adapter and `D3D11CreateDevice` builds a
+feature-level 11_0 device on it. The x64 unwinder (`RtlLookupFunctionEntry`,
+`RtlVirtualUnwind`, `RtlUnwindEx`, `__C_specific_handler`) lets DXVK's runtime raise
+and catch exceptions.
 
-Not done yet: keyboard and mouse input inside windows, audio, gamepads, and the
-DirectX DLLs themselves (DXVK supplies those as native PE DLLs placed next to the game).
+Not done yet: presenting a swapchain to a visible window end to end, audio and
+gamepads. The DirectX DLLs themselves come from DXVK, placed next to the game.
 
 ## Troubleshooting
 
