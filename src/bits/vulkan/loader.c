@@ -154,7 +154,10 @@ static PFN_vkVoidFunction WINAPI vkGetInstanceProcAddr(VkInstance inst, const ch
     void *o = override(name);
     if (o)
         return (PFN_vkVoidFunction)o;
-    return (PFN_vkVoidFunction)vk_wrap(name, vk_host_instance(inst, name));
+    void *h = vk_host_instance(inst, name);
+    if (!h)
+        trace("vulkan: instance proc %s is NULL", name);
+    return (PFN_vkVoidFunction)vk_wrap(name, h);
 }
 
 static PFN_vkVoidFunction WINAPI vkGetDeviceProcAddr(VkDevice dev, const char *name)
@@ -167,7 +170,10 @@ static PFN_vkVoidFunction WINAPI vkGetDeviceProcAddr(VkDevice dev, const char *n
     if (!vk_loaded())
         return NULL;
     host_gdpa gdpa = (host_gdpa)dlsym(lib, "vkGetDeviceProcAddr");
-    return (PFN_vkVoidFunction)vk_wrap(name, gdpa ? (void *)gdpa(dev, name) : NULL);
+    void *h = gdpa ? (void *)gdpa(dev, name) : NULL;
+    if (!h)
+        trace("vulkan: device proc %s is NULL", name);
+    return (PFN_vkVoidFunction)vk_wrap(name, h);
 }
 
 BIT_TABLE(vk_loader, BIT_FN(vkGetInstanceProcAddr), BIT_FN(vkGetDeviceProcAddr));
