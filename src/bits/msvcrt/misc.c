@@ -319,8 +319,13 @@ static _Noreturn void WINAPI _purecall(void)
     process_exit(3);
 }
 
+static int WINAPI _ismbblead(unsigned c) { return 0; }
+static int WINAPI _ismbbtrail(unsigned c) { return 0; }
+static int WINAPI _getmbcp(void) { return 0; }
+
 BIT_TABLE(crt_misc,
           BIT_FN(_errno), BIT_FN(__doserrno), BIT_FN(_get_errno), BIT_FN(_set_errno),
+          BIT_FN(_ismbblead), BIT_FN(_ismbbtrail), BIT_FN(_getmbcp),
           BIT_AS("signal", signal_), BIT_AS("raise", raise_),
           BIT_FN(_lock), BIT_FN(_unlock),
           BIT_AS("setlocale", setlocale_), BIT_FN(_wsetlocale), BIT_AS("localeconv", localeconv_),
