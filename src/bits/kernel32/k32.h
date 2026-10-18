@@ -15,6 +15,8 @@
 
 extern const struct bit_table k32_module;
 extern const struct bit_table k32_file;
+extern const struct bit_table k32_filemap;
+extern const struct bit_table k32_resource;
 extern const struct bit_table k32_find;
 extern const struct bit_table k32_console;
 extern const struct bit_table k32_memory;

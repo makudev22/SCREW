@@ -25,5 +25,5 @@ DWORD copy_out_w(const char *src, LPWSTR dst, DWORD size)
 }
 
 BIT_DEFINE(bit_kernel32, "kernel32.dll",
-           &k32_module, &k32_file, &k32_find, &k32_console, &k32_memory, &k32_thread,
-           &k32_sync, &k32_time, &k32_system, &k32_env, &k32_string, &k32_proc, &k32_unwind);
+           &k32_module, &k32_file, &k32_filemap, &k32_find, &k32_console, &k32_memory, &k32_thread,
+           &k32_sync, &k32_time, &k32_system, &k32_env, &k32_string, &k32_proc, &k32_unwind, &k32_resource);
