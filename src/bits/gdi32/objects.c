@@ -249,8 +249,26 @@ static int WINAPI GetDeviceCaps(HDC dc, int index)
     }
 }
 
+static BOOL WINAPI GetICMProfileA(HDC dc, DWORD *size, LPSTR name)
+{
+    if (size)
+        *size = 0;
+    return FALSE;
+}
+
+static BOOL WINAPI GetICMProfileW(HDC dc, DWORD *size, LPWSTR name)
+{
+    if (size)
+        *size = 0;
+    return FALSE;
+}
+
+static BOOL WINAPI GetDeviceGammaRamp(HDC dc, void *ramp) { return gdi_get(dc, GDI_DC) != NULL; }
+static BOOL WINAPI SetDeviceGammaRamp(HDC dc, void *ramp) { return gdi_get(dc, GDI_DC) != NULL; }
+
 BIT_TABLE(gdi_objects,
           BIT_FN(CreateCompatibleDC), BIT_FN(CreateDCA), BIT_FN(CreateDCW), BIT_FN(DeleteDC),
           BIT_FN(SelectObject), BIT_FN(GetCurrentObject), BIT_FN(DeleteObject),
           BIT_FN(GetObjectA), BIT_FN(GetObjectW), BIT_FN(GetObjectType),
-          BIT_FN(CreateBitmap), BIT_FN(CreateCompatibleBitmap), BIT_FN(GetDeviceCaps));
+          BIT_FN(CreateBitmap), BIT_FN(CreateCompatibleBitmap), BIT_FN(GetDeviceCaps),
+          BIT_FN(GetICMProfileA), BIT_FN(GetICMProfileW), BIT_FN(GetDeviceGammaRamp), BIT_FN(SetDeviceGammaRamp));

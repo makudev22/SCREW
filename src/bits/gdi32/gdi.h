@@ -50,5 +50,6 @@ HBITMAP bitmap_create(int width, int height, int bpp, const void *init);
 extern const struct bit_table gdi_objects;
 extern const struct bit_table gdi_blit;
 extern const struct bit_table gdi_kmt;
+extern const struct bit_table gdi_dib;
 
 #endif
