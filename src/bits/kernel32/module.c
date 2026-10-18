@@ -1,5 +1,7 @@
 #include "k32.h"
 
+#include <screw/log.h>
+
 #include <screw/loader.h>
 #include <screw/process.h>
 
@@ -21,6 +23,12 @@ static HMODULE handle_of(const char *name)
     if (!name)
         return module_main()->base;
     struct module *m = module_find(name);
+    if (!m) {
+        char norm[MODULE_NAME_MAX];
+        module_normalize(name, norm);
+        if (bit_find(norm))
+            m = module_load(norm);
+    }
     if (!m)
         last_error_set(ERROR_MOD_NOT_FOUND);
     return m ? m->base : NULL;
@@ -108,8 +116,11 @@ static FARPROC WINAPI GetProcAddress(HMODULE h, LPCSTR name)
         return NULL;
     }
     void *p = (uintptr_t)name < 0x10000 ? module_ordinal(m, (uintptr_t)name) : module_symbol(m, name);
-    if (!p)
+    if (!p) {
         last_error_set(ERROR_PROC_NOT_FOUND);
+        if ((uintptr_t)name >= 0x10000)
+            trace("GetProcAddress(%s!%s) not found", m->name, name);
+    }
     return p;
 }
 
