@@ -1,0 +1,8 @@
+keydown: 1 (vk=A)
+char: 1
+lbutton: 1
+mousemove: 1 at (123,77)
+GetCursorPos: ok
+MapVirtualKey A->char: A
+VkKeyScan a: vk=A
+async state queryable: ok
