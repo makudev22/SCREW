@@ -46,7 +46,6 @@ static const struct alias aliases[] = {
     { "wsock32", &bit_ws2_32 },
     { "api-ms-win-eventing-", &bit_advapi32 },
     { "ext-ms-win-ntuser-", &bit_user32 },
-    { "winevulkan", &bit_vulkan },
     { "api-ms-win-core-version-", &bit_version },
     { "ext-ms-win-gdi-", &bit_gdi32 },
 };
