@@ -374,6 +374,15 @@ static BOOL WINAPI IsWow64Process(HANDLE proc, BOOL *wow)
     return TRUE;
 }
 
+static BOOL WINAPI GetHandleInformation(HANDLE h, LPDWORD flags)
+{
+    if (flags)
+        *flags = 0;
+    return TRUE;
+}
+
+static BOOL WINAPI SetHandleInformation(HANDLE h, DWORD mask, DWORD flags) { return TRUE; }
+
 static BOOL WINAPI DeviceIoControl(HANDLE dev, DWORD code, void *in, DWORD in_len, void *out, DWORD out_len,
                                    LPDWORD returned, void *overlapped)
 {
@@ -399,4 +408,5 @@ BIT_TABLE(k32_system,
           BIT_FN(SetUnhandledExceptionFilter), BIT_FN(UnhandledExceptionFilter),
           BIT_FN(SetErrorMode), BIT_FN(GetErrorMode), BIT_FN(SetThreadErrorMode),
           BIT_FN(RaiseException), BIT_FN(FormatMessageA), BIT_FN(FormatMessageW),
-          BIT_FN(GetLogicalProcessorInformation), BIT_FN(IsWow64Process), BIT_FN(DeviceIoControl));
+          BIT_FN(GetLogicalProcessorInformation), BIT_FN(IsWow64Process), BIT_FN(DeviceIoControl),
+          BIT_FN(GetHandleInformation), BIT_FN(SetHandleInformation));
