@@ -174,6 +174,7 @@ static void pump_x11(void)
             window_send(w, WM_ACTIVATEAPP, FALSE, 0);
             break;
         default:
+            input_event(&ev, w);
             break;
         }
     }

@@ -208,6 +208,9 @@ extern const struct bit_table u32_system;
 extern const struct bit_table u32_dialog;
 extern const struct bit_table u32_rect;
 extern const struct bit_table u32_paint;
+extern const struct bit_table u32_input;
+
+void input_event(XEvent *ev, struct window *w);
 
 static inline BOOL fail_win(DWORD error)
 {
