@@ -273,6 +273,8 @@ static BOOL WINAPI RtlGenRandom(void *buf, ULONG n)
     return getrandom(buf, n, 0) == (ssize_t)n;
 }
 
+static BYTE WINAPI RtlDllShutdownInProgress(void) { return 0; }
+
 static WORD WINAPI RtlCaptureStackBackTrace(ULONG skip, ULONG count, void **frames, ULONG *hash)
 {
     if (hash)
@@ -294,6 +296,6 @@ BIT_TABLE(nt_rtl,
           BIT_FN(RtlQueryPerformanceCounter), BIT_FN(RtlQueryPerformanceFrequency),
           BIT_FN(NtDelayExecution), BIT_FN(NtYieldExecution),
           BIT_FN(RtlRandomEx), BIT_AS("RtlRandom", RtlRandomEx), BIT_AS("SystemFunction036", RtlGenRandom),
-          BIT_FN(RtlCaptureStackBackTrace));
+          BIT_FN(RtlCaptureStackBackTrace), BIT_FN(RtlDllShutdownInProgress));
 
 BIT_DEFINE(bit_ntdll, "ntdll.dll", &nt_rtl);
