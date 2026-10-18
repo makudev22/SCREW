@@ -45,6 +45,12 @@ build/unit/%: tests/unit/%.c $(LIBOBJ)
 
 samples: $(EXES)
 
+bench: build/d3dbench.exe
+
+build/d3dbench.exe: tools/d3dbench.c
+	@mkdir -p $(dir $@)
+	$(WINCC) -O2 -o $@ $< -ld3d11 -ldxgi -ldxguid
+
 test: $(BIN) $(EXES) $(UNITS)
 	@for u in $(UNITS); do $$u || exit 1; done
 	@tests/run.sh $(BIN) build/tests tests/expected

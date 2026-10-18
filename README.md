@@ -94,6 +94,19 @@ and catch exceptions.
 Not done yet: presenting a swapchain to a visible window end to end, audio and
 gamepads. The DirectX DLLs themselves come from DXVK, placed next to the game.
 
+## Benchmark
+
+A tiny Direct3D 11 benchmark lives in `tools/d3dbench.c`: it opens a window, creates a
+swapchain through DXVK, clears to an animating colour and reports the average FPS.
+
+```
+make bench
+SCREW_DLL_PATH=~/screw-bench/dxvk-3.1.1/x64 ./build/screw build/d3dbench.exe 2000
+```
+
+The argument is the frame count. It confirms the full path: Direct3D 11 -> DXVK ->
+vulkan-1 -> libvulkan -> GPU, including swapchain presentation to the window.
+
 ## Troubleshooting
 
 Run `screw doctor` first. Crashes print the module and offset where they happened.
