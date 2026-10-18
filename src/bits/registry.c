@@ -14,6 +14,14 @@ extern const struct bit bit_vulkan;
 extern const struct bit bit_version;
 extern const struct bit bit_gdi32;
 extern const struct bit bit_setupapi;
+extern const struct bit bit_dsound;
+extern const struct bit bit_ole32;
+extern const struct bit bit_winmm;
+extern const struct bit bit_shell32;
+extern const struct bit bit_imm32;
+extern const struct bit bit_oleaut32;
+extern const struct bit bit_shlwapi;
+extern const struct bit bit_iphlpapi;
 
 static const struct bit *const bits[] = {
     &bit_kernel32,
@@ -26,6 +34,14 @@ static const struct bit *const bits[] = {
     &bit_version,
     &bit_gdi32,
     &bit_setupapi,
+    &bit_dsound,
+    &bit_ole32,
+    &bit_winmm,
+    &bit_shell32,
+    &bit_imm32,
+    &bit_oleaut32,
+    &bit_shlwapi,
+    &bit_iphlpapi,
 };
 
 #define BIT_COUNT (sizeof bits / sizeof bits[0])
