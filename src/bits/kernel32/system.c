@@ -230,6 +230,20 @@ static LONG WINAPI UnhandledExceptionFilter(void *pointers)
     return top_filter ? top_filter(pointers) : 0;
 }
 
+static int WINAPI MulDiv(int a, int b, int c)
+{
+    if (c == 0)
+        return -1;
+    int64_t num = (int64_t)a * b;
+    int64_t half = (num < 0) ^ (c < 0) ? -(int64_t)(c < 0 ? -c : c) / 2 : (int64_t)(c < 0 ? -c : c) / 2;
+    return (int)((num + half) / c);
+}
+
+static void *WINAPI AddVectoredExceptionHandler(ULONG first, void *handler) { return handler; }
+static ULONG WINAPI RemoveVectoredExceptionHandler(void *handle) { return 1; }
+static void *WINAPI AddVectoredContinueHandler(ULONG first, void *handler) { return handler; }
+static ULONG WINAPI RemoveVectoredContinueHandler(void *handle) { return 1; }
+
 static UINT WINAPI SetErrorMode(UINT mode)
 {
     UINT prev = error_mode;
@@ -406,6 +420,8 @@ BIT_TABLE(k32_system,
           BIT_FN(IsDebuggerPresent), BIT_FN(CheckRemoteDebuggerPresent),
           BIT_FN(OutputDebugStringA), BIT_FN(OutputDebugStringW), BIT_FN(DebugBreak),
           BIT_FN(SetUnhandledExceptionFilter), BIT_FN(UnhandledExceptionFilter),
+          BIT_FN(AddVectoredExceptionHandler), BIT_FN(RemoveVectoredExceptionHandler),
+          BIT_FN(AddVectoredContinueHandler), BIT_FN(RemoveVectoredContinueHandler), BIT_FN(MulDiv),
           BIT_FN(SetErrorMode), BIT_FN(GetErrorMode), BIT_FN(SetThreadErrorMode),
           BIT_FN(RaiseException), BIT_FN(FormatMessageA), BIT_FN(FormatMessageW),
           BIT_FN(GetLogicalProcessorInformation), BIT_FN(IsWow64Process), BIT_FN(DeviceIoControl),

@@ -178,6 +178,8 @@ static DWORD WINAPI GetCurrentProcessorNumber(void) { return sched_getcpu(); }
 
 static BOOL WINAPI SetProcessAffinityMask(HANDLE h, DWORD_PTR mask) { return mask != 0; }
 
+static DWORD WINAPI SetThreadExecutionState(DWORD flags) { return 0x80000000u; }
+
 static BOOL WINAPI ProcessIdToSessionId(DWORD pid, DWORD *session)
 {
     if (!session)
@@ -201,4 +203,4 @@ BIT_TABLE(k32_thread,
           BIT_FN(GetThreadTimes), BIT_FN(GetProcessTimes),
           BIT_FN(SetPriorityClass), BIT_FN(GetPriorityClass),
           BIT_FN(GetProcessAffinityMask), BIT_FN(SetProcessAffinityMask), BIT_FN(GetCurrentProcessorNumber),
-          BIT_FN(ProcessIdToSessionId));
+          BIT_FN(ProcessIdToSessionId), BIT_FN(SetThreadExecutionState));
