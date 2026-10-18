@@ -6,3 +6,5 @@
 *_d3d11.log
 *_dxgi.log
 *_d3d9.log
+tools/cube/*.vert.h
+tools/cube/*.frag.h

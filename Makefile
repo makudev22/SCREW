@@ -51,6 +51,20 @@ build/d3dbench.exe: tools/d3dbench.c
 	@mkdir -p $(dir $@)
 	$(WINCC) -O2 -o $@ $< -ld3d11 -ldxgi -ldxguid
 
+GLSLANG  ?= glslangValidator
+VKINC    ?= /usr/include
+
+cube: build/vkcube.exe
+
+tools/cube/%.h: tools/cube/%
+	$(GLSLANG) -V --vn $(subst .,_,$(notdir $<))_spv -o $@ $<
+
+build/vkcube.exe: tools/cube/vkcube.c tools/cube/cube.vert.h tools/cube/cube.frag.h
+	@mkdir -p build/vkinc
+	@ln -sfn $(VKINC)/vulkan build/vkinc/vulkan
+	@ln -sfn $(VKINC)/vk_video build/vkinc/vk_video
+	$(WINCC) -O2 -Ibuild/vkinc -Itools/cube -o $@ $<
+
 test: $(BIN) $(EXES) $(UNITS)
 	@for u in $(UNITS); do $$u || exit 1; done
 	@tests/run.sh $(BIN) build/tests tests/expected

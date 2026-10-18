@@ -107,6 +107,23 @@ SCREW_DLL_PATH=~/screw-bench/dxvk-3.1.1/x64 ./build/screw build/d3dbench.exe 200
 The argument is the frame count. It confirms the full path: Direct3D 11 -> DXVK ->
 vulkan-1 -> libvulkan -> GPU, including swapchain presentation to the window.
 
+## Spinning cube
+
+`tools/cube/` is a native Vulkan demo: a rotating, vertex-coloured 3D cube in a window,
+rendered with real shaders, a depth buffer and a swapchain. It runs as a Windows `.exe`
+whose Vulkan calls cross through the `vulkan-1` bridge to the GPU.
+
+Needs `glslangValidator` (package `glslang-tools`) and the Vulkan headers
+(`libvulkan-dev`) to build the shaders.
+
+```
+make cube
+./build/screw build/vkcube.exe 600
+```
+
+The argument is the frame count; it prints the average FPS (capped at the monitor
+refresh rate by FIFO present).
+
 ## Troubleshooting
 
 Run `screw doctor` first. Crashes print the module and offset where they happened.
