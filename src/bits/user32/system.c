@@ -396,6 +396,16 @@ static HANDLE WINAPI LoadImageW(HINSTANCE inst, LPCWSTR name, UINT type, int cx,
 static BOOL WINAPI DestroyIcon(HICON h) { return TRUE; }
 static BOOL WINAPI DestroyCursor(HCURSOR h) { return TRUE; }
 
+static DWORD WINAPI GetClipboardSequenceNumber(void) { return 0; }
+static BOOL WINAPI OpenClipboard(HWND owner) { return TRUE; }
+static BOOL WINAPI CloseClipboard(void) { return TRUE; }
+static BOOL WINAPI EmptyClipboard(void) { return TRUE; }
+static BOOL WINAPI IsClipboardFormatAvailable(UINT fmt) { return FALSE; }
+static HANDLE WINAPI GetClipboardData(UINT fmt) { return NULL; }
+static HANDLE WINAPI SetClipboardData(UINT fmt, HANDLE mem) { return mem; }
+static UINT WINAPI RegisterClipboardFormatA(LPCSTR name) { return 0xC000; }
+static UINT WINAPI RegisterClipboardFormatW(LPCWSTR name) { return 0xC000; }
+
 BIT_TABLE(u32_system,
           BIT_FN(GetSystemMetrics), BIT_FN(GetSystemMetricsForDpi),
           BIT_FN(SystemParametersInfoA), BIT_FN(SystemParametersInfoW),
@@ -411,4 +421,7 @@ BIT_TABLE(u32_system,
           BIT_FN(GetThreadDpiAwarenessContext),
           BIT_FN(GetSysColor), BIT_FN(GetDoubleClickTime), BIT_FN(GetCaretBlinkTime), BIT_FN(MessageBeep),
           BIT_FN(LoadCursorA), BIT_FN(LoadCursorW), BIT_FN(LoadIconA), BIT_FN(LoadIconW),
-          BIT_FN(LoadImageA), BIT_FN(LoadImageW), BIT_FN(DestroyIcon), BIT_FN(DestroyCursor));
+          BIT_FN(LoadImageA), BIT_FN(LoadImageW), BIT_FN(DestroyIcon), BIT_FN(DestroyCursor),
+          BIT_FN(GetClipboardSequenceNumber), BIT_FN(OpenClipboard), BIT_FN(CloseClipboard),
+          BIT_FN(EmptyClipboard), BIT_FN(IsClipboardFormatAvailable), BIT_FN(GetClipboardData),
+          BIT_FN(SetClipboardData), BIT_FN(RegisterClipboardFormatA), BIT_FN(RegisterClipboardFormatW));

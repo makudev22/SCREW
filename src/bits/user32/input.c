@@ -392,10 +392,52 @@ static SHORT WINAPI VkKeyScanA(char ch) { return VkKeyScanW((unsigned char)ch); 
 
 static HANDLE WINAPI CreateIconIndirect(void *info) { return (HANDLE)(uintptr_t)0x20001; }
 
+static HANDLE WINAPI CreateIcon(HINSTANCE inst, int w, int h, BYTE planes, BYTE bpp, const BYTE *and_bits,
+                                const BYTE *xor_bits)
+{
+    return (HANDLE)(uintptr_t)0x20001;
+}
+
+static BOOL WINAPI TrackMouseEvent(void *track) { return TRUE; }
+
+static BOOL WINAPI RegisterRawInputDevices(const void *devices, UINT count, UINT size) { return TRUE; }
+static UINT WINAPI GetRawInputData(HANDLE h, UINT cmd, void *data, UINT *size, UINT hdr) { return 0; }
+static UINT WINAPI GetRegisteredRawInputDevices(void *devices, UINT *count, UINT size)
+{
+    if (count)
+        *count = 0;
+    return 0;
+}
+
+static HANDLE WINAPI CreateIconFromResource(const void *bits, DWORD size, BOOL icon, DWORD ver)
+{
+    return (HANDLE)(uintptr_t)0x20001;
+}
+
+static HANDLE WINAPI CreateIconFromResourceEx(const void *bits, DWORD size, BOOL icon, DWORD ver, int cx, int cy,
+                                              UINT flags)
+{
+    return (HANDLE)(uintptr_t)0x20001;
+}
+
+static HANDLE WINAPI CopyImage(HANDLE img, UINT type, int cx, int cy, UINT flags)
+{
+    return img ? img : (HANDLE)(uintptr_t)0x20001;
+}
+
+static BOOL WINAPI GetIconInfo(HANDLE icon, void *info) { return FALSE; }
+static HCURSOR WINAPI CreateCursor(HINSTANCE inst, int x, int y, int w, int h, const void *a, const void *b)
+{
+    return (HCURSOR)(uintptr_t)0x20002;
+}
+
 BIT_TABLE(u32_input,
           BIT_FN(GetAsyncKeyState), BIT_FN(GetKeyState), BIT_FN(GetKeyboardState), BIT_FN(SetKeyboardState),
           BIT_FN(GetCursorPos), BIT_FN(SetCursorPos), BIT_FN(SetCursor), BIT_FN(GetCursor),
           BIT_FN(ShowCursor), BIT_FN(ClipCursor), BIT_FN(GetClipCursor),
           BIT_FN(MapVirtualKeyA), BIT_FN(MapVirtualKeyW), BIT_FN(MapVirtualKeyExA), BIT_FN(MapVirtualKeyExW),
           BIT_FN(ToUnicode), BIT_FN(ToAscii), BIT_FN(VkKeyScanA), BIT_FN(VkKeyScanW),
-          BIT_FN(CreateIconIndirect));
+          BIT_FN(CreateIconIndirect), BIT_FN(CreateIcon), BIT_FN(CopyImage), BIT_FN(GetIconInfo),
+          BIT_FN(CreateCursor), BIT_FN(CreateIconFromResource), BIT_FN(CreateIconFromResourceEx),
+          BIT_FN(RegisterRawInputDevices), BIT_FN(GetRawInputData), BIT_FN(GetRegisteredRawInputDevices),
+          BIT_FN(TrackMouseEvent));
